@@ -43,6 +43,23 @@ async function run() {
       const tasks = await TaskCollection.collection('tasks').insertOne(req.body)
       res.json(tasks)
     })
+    app.get('/tasks/:id', async (req, res) => {  
+      const tasks = await TaskCollection.collection('tasks').findOne({ _id: ObjectId(req.params.id) })
+      res.json(tasks)
+    })
+    app.put('/tasks/:id', async (req, res) => {
+      const tasks = await TaskCollection.collection('tasks').updateOne(
+        { _id: ObjectId(req.params.id) },
+        { $set: req.body }
+      )
+      res.json(tasks)
+    })
+    app.delete('/tasks/:id', async (req, res) => {
+      const tasks = await TaskCollection.collection('tasks').deleteOne({
+        _id: ObjectId(req.params.id),
+      })
+      res.json(tasks)
+    })
   } finally {
     // await client.close();
   }
